@@ -1,5 +1,8 @@
-import { data } from "react-router-dom";
 import useHttp from "../hooks/http.hook";
+
+interface data {
+    [key: string]: string
+}
 
 const useServ = () =>{
     const {request} = useHttp();
@@ -13,13 +16,13 @@ const useServ = () =>{
     }
 
     //  метод отправки данных 
-    const usePost = async () =>{
-        const res = await request({
+    const usePost = async (data:data) =>{
+        return await request({
             url: _apiBase,
             method: "POST",
             body: JSON.stringify(data)
         })
-        return res
+       
     }
 
     return {useGet, usePost}

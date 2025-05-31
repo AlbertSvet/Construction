@@ -1,8 +1,9 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import {auth, db} from '../firebase/firebaseConfig'
 
-import useServ from "../service/serv";
 import {create} from 'zustand'
 
-const {useGet, usePost} = useServ()
 interface User {
     [key:string]: string
 }
@@ -10,23 +11,30 @@ interface Todos {
     zusForm: User[],
     loading: boolean,
     status: boolean,
-    zusGet: () => Promise<void>
+    zusGet: (data:Record<string, string>) => Promise<void>
 }
 
-const useTodos = create<Todos>((set) =>({
+const useStore = create<Todos>((set) =>({
     zusForm: [
         {name:'', password:''}
     ],
     loading: false,
     status: false,
-    zusGet: async () => {
+    zusGet: async (data) => {
         set(()=>{
             return {
                 loading: true
             }
         })
         try {
-            const data = await useGet();
+            const {login, pass} = data;
+            const userCred = await createUserWithEmailAndPassword(auth, login, pass);
+            const user = userCred.user;
+            await setDoc(doc(db, 'users', user.uid),{
+                name: login,
+                password: pass
+            })
+
             set((state) =>({
                 zusForm: [...state.zusForm,data],
                 loading: false,
@@ -43,3 +51,5 @@ const useTodos = create<Todos>((set) =>({
        
     }
 }))
+
+export default useStore
