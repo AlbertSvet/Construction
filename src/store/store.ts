@@ -15,9 +15,7 @@ interface Todos {
 }
 
 const useStore = create<Todos>((set) =>({
-    zusForm: [
-        {name:'', password:''}
-    ],
+    zusForm: [],
     loading: false,
     status: false,
     zusGet: async (data) => {
@@ -30,9 +28,9 @@ const useStore = create<Todos>((set) =>({
             const {login, pass} = data;
             const userCred = await createUserWithEmailAndPassword(auth, login, pass);
             const user = userCred.user;
+            // console.log('user.uid', user?.uid)
             await setDoc(doc(db, 'users', user.uid),{
-                name: login,
-                password: pass
+                name: login
             })
 
             set((state) =>({
@@ -41,6 +39,7 @@ const useStore = create<Todos>((set) =>({
                 status: true
             }))
         } catch (error) {
+            console.log(error)
             set(()=>{
                 return{
                     loading: false,

@@ -1,6 +1,6 @@
-import { ChangeEvent, useState} from 'react'
+import { ChangeEvent, useState, useEffect} from 'react'
 import useStore from '../../store/store'
-import './regist.scss'
+import Form from '../../component/form/form';
 
 
 
@@ -12,6 +12,7 @@ const Registration = () =>{
         login: '',
         pass: ''
     })
+    
 
     const handelChange = (e: ChangeEvent<HTMLInputElement>) =>{
         e.preventDefault();
@@ -23,49 +24,25 @@ const Registration = () =>{
         }))
     }
 
-    const handelSubmit = () =>{
-           getFireBase(data)    
-           .then(()=>{
-            setData({
-                login: '',
-                pass: ''
-            })
-            console.log(usersList)
-           })            
-        
+    useEffect(()=>{
+        console.log(usersList)
+    },[usersList])
+
+    const handelSubmit = async () =>{
+        await getFireBase(data)    
+           
+        setData({
+            login: '',
+            pass: ''
+        })
     }
 
     return(
-        <section className='registration'>
-            <div className='registration__container _container'>
-                <h1 className='registration__title'>Регистрация администратора</h1>
-                <div className='registration__block-form'>
-                    <form action="#">
-                        <div className='registration__block-input'>
-                            <label className='registration__lb' htmlFor='login'>Логин (почта)</label>
-                            <input 
-                            onChange={handelChange} 
-                            className='registration__inp' 
-                            value={data.login} 
-                            type="text" 
-                            name="login" 
-                            id='login'/>
-                        </div>
-                        <div className='registration__block-input'>
-                            <label className='registration__lb' htmlFor='pass'>Пароль</label>
-                            <input                          
-                            onChange={handelChange} 
-                            className='registration__inp' 
-                             value={data.pass} 
-                            type="text" 
-                            name="pass" 
-                            id='pass'/>
-                        </div>
-                        <button onClick={handelSubmit} type="button">Регистрация</button>
-                    </form>
-                </div>
-            </div>
-        </section>
+        <Form
+        data={data}
+        handelChange={handelChange}
+        handelSubmit={handelSubmit}
+        />
     )
 }
 
