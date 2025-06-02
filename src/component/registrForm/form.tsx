@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react'
-
+import { Link } from 'react-router-dom'
 import './form.scss'
 
 
@@ -20,6 +20,7 @@ const Form = ({handelChange,handelSubmit,data}: params) =>{
                         <div className='registration__block-input'>
                             <label className='registration__lb' htmlFor='login'>Логин (почта)</label>
                             <input 
+                            placeholder='email'
                             onChange={(e)=>handelChange(e)} 
                             className='registration__inp' 
                             value={data.login} 
@@ -29,7 +30,8 @@ const Form = ({handelChange,handelSubmit,data}: params) =>{
                         </div>
                         <div className='registration__block-input'>
                             <label className='registration__lb' htmlFor='pass'>Пароль</label>
-                            <input                          
+                            <input  
+                            placeholder='pass'                        
                             onChange={(e)=>handelChange(e)} 
                             className='registration__inp' 
                              value={data.pass} 
@@ -39,8 +41,11 @@ const Form = ({handelChange,handelSubmit,data}: params) =>{
                         </div>
                         <button 
                         onClick={handelSubmit} 
-                        type="button">Регистрация</button>
+                        type="button">Зарегистрироваться</button>
                     </form>
+                    <div className='block-link'>
+                        <Link className='link' to={'/authorization'}>Авторизация</Link>
+                    </div>
                 </div>
             </div>
         </section>

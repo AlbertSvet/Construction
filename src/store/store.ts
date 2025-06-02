@@ -1,4 +1,5 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from "firebase/firestore";
 import {auth, db} from '../firebase/firebaseConfig'
 
@@ -13,7 +14,12 @@ interface Todos {
     status: boolean,
     zusGet: (data:Record<string, string>) => Promise<void>
 }
+interface Aut extends Pick<Todos, 'loading'>{
+    zusAut: (data:Record<string,string>) => Promise<void>
+}
 
+
+// Регистрация
 const useStore = create<Todos>((set) =>({
     zusForm: [],
     loading: false,
@@ -51,4 +57,30 @@ const useStore = create<Todos>((set) =>({
     }
 }))
 
-export default useStore
+// Авторизация
+const useStoreAut = create<Aut>((set) =>({
+    loading: false,
+   
+    zusAut: async (data) =>{
+        set(()=>({
+            loading: true
+        }))
+        try{
+            const {login, pass} = data
+            const userAut = await signInWithEmailAndPassword(auth, login, pass)
+            const user = userAut.user
+           
+            console.log('User logged:', user);
+        } catch(e){
+
+            set(()=>({
+                loading: false
+            }))
+
+            console.log(e)
+            throw e
+        }
+    }
+}))
+
+export {useStore, useStoreAut}

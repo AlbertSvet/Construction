@@ -1,6 +1,6 @@
 import { ChangeEvent, useState, useEffect} from 'react'
-import useStore from '../../store/store'
-import Form from '../../component/form/form';
+import {useStore} from '../../store/store'
+import Form from '../../component/registrForm/form';
 
 
 
