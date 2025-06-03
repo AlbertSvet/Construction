@@ -1,16 +1,20 @@
 import { ChangeEvent } from 'react'
 import { Link } from 'react-router-dom'
+import { useForm, SubmitHandler } from "react-hook-form"
 import './form.scss'
+import { error } from 'console'
 
 
 interface params {
-    handelChange: (e: ChangeEvent<HTMLInputElement>)=> void,
-    handelSubmit: ()=> {},
-    data: obj
+    onSubmit: (formData:obj) => Promise<void>,
 }
 type obj = Record<string, string>
 
-const Form = ({handelChange,handelSubmit,data}: params) =>{
+const Form = ({onSubmit}: params) =>{
+    const { register, handleSubmit, formState: {errors}, clearErrors } = useForm({
+        mode: 'onBlur',
+    });
+
     return (
         <section className='registration'>
             <div className='registration__container _container'>
@@ -18,29 +22,45 @@ const Form = ({handelChange,handelSubmit,data}: params) =>{
                 <div className='registration__block-form'>
                     <form action="#">
                         <div className='registration__block-input'>
+                            
                             <label className='registration__lb' htmlFor='login'>Логин (почта)</label>
                             <input 
+                            {...register('login', {
+                                required: "Email обязателен", 
+                                minLength: {
+                                    value: 6,
+                                    message: 'Минимум 6 символов'
+                                },
+                            })}
+                            onBlur={()=>clearErrors('login')}
                             placeholder='email'
-                            onChange={(e)=>handelChange(e)} 
                             className='registration__inp' 
-                            value={data.login} 
                             type="text" 
                             name="login" 
                             id='login'/>
+                            {errors.login && <p style={{'color': 'red', 'fontSize': '18px', 'marginTop': '5px'}}>{errors.login?.message as string}</p>}
                         </div>
                         <div className='registration__block-input'>
                             <label className='registration__lb' htmlFor='pass'>Пароль</label>
                             <input  
+                            {...register('pass', {
+                                required: "Пароль обязателен", 
+                                minLength:{
+                                    value: 5,
+                                    message: 'Минимум 5 символов'
+                                }})
+                            }
+                            onBlur={()=>clearErrors('pass')}
                             placeholder='pass'                        
-                            onChange={(e)=>handelChange(e)} 
                             className='registration__inp' 
-                             value={data.pass} 
                             type="text" 
                             name="pass" 
                             id='pass'/>
+                            {errors.pass && <p style={{'color': 'red', 'fontSize': '18px', 'marginTop': '5px'}}>{errors.pass?.message as string}</p>}
+
                         </div>
                         <button 
-                        onClick={handelSubmit} 
+                        onClick={handleSubmit(onSubmit)} 
                         type="button">Зарегистрироваться</button>
                     </form>
                     <div className='block-link'>
