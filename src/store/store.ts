@@ -12,6 +12,7 @@ interface Todos {
     zusForm: User[],
     loading: boolean,
     status: boolean,
+    changeStatus: ()=>void
     zusGet: (data:Record<string, string>) => Promise<void>
 }
 interface Aut extends Pick<Todos, 'loading'>{
@@ -24,6 +25,14 @@ const useStore = create<Todos>((set) =>({
     zusForm: [],
     loading: false,
     status: false,
+    changeStatus: ()=>{
+        setTimeout(()=>{
+             set(()=>({
+                status:false
+            }))
+        },3000)
+       
+    },
     zusGet: async (data) => {
         set(()=>{
             return {
