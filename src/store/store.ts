@@ -1,5 +1,6 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signOut } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import {auth, db} from '../firebase/firebaseConfig'
 
@@ -18,6 +19,11 @@ interface Todos {
 interface Aut extends Pick<Todos, 'loading'>{
     zusAut: (data:Record<string,string>) => Promise<void>
 }
+interface LogOut {
+    loading: boolean,
+    zusOut: () => Promise<void>
+}
+
 
 
 // Регистрация
@@ -28,9 +34,9 @@ const useStore = create<Todos>((set) =>({
     changeStatus: ()=>{
         setTimeout(()=>{
              set(()=>({
-                status:false
+                status:true
             }))
-        },3000)
+        },500)
        
     },
     zusGet: async (data) => {
@@ -47,14 +53,15 @@ const useStore = create<Todos>((set) =>({
             await setDoc(doc(db, 'users', user.uid),{
                 name: login
             })
-
+            
             set((state) =>({
                 zusForm: [...state.zusForm,data],
                 loading: false,
-                status: true
+                status: false
             }))
         } catch (error) {
             console.log(error)
+            alert('Повторите попытку')
             set(()=>{
                 return{
                     loading: false,
@@ -85,11 +92,30 @@ const useStoreAut = create<Aut>((set) =>({
             set(()=>({
                 loading: false
             }))
-
+            alert('неверный логин или пароль')
             console.log(e)
-            throw e
+          
         }
     }
 }))
 
-export {useStore, useStoreAut}
+const useOut = create<LogOut>((set)=>({
+    loading: false,
+    zusOut: async () =>{
+        try{
+            await signOut(auth)
+            console.log("Пользователь вышел");
+            set(()=>({
+                loading: true
+            }))
+        }catch(e){
+            console.log(e)
+            set(()=>({
+                loading:false
+            }))
+        }
+       
+    }
+}))
+
+export {useStore, useStoreAut, useOut}

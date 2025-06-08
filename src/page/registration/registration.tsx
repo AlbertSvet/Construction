@@ -1,9 +1,8 @@
 import { useEffect} from 'react'
 import {useStore} from '../../store/store'
 import { useForm} from "react-hook-form"
-import { Link } from 'react-router-dom'
-import './regist.scss'
-// import Form from '../../component/registrForm/form';
+import { Link, useNavigate } from 'react-router-dom'
+import './registration.scss'
 
 interface formData {
     [key: string]:string
@@ -14,7 +13,7 @@ const Registration = () =>{
     const usersList = useStore((state)=>state.zusForm);
     const changeStatus = useStore((state)=>state.changeStatus)
     const statusRegistration = useStore((state) => state.status)
-    
+    const navigate = useNavigate()
      const { register, handleSubmit, formState: {errors}, clearErrors,reset} = useForm({
             mode: 'onBlur',
         });
@@ -26,18 +25,21 @@ const Registration = () =>{
 
     const onSubmit = async (formData:formData) =>{
         try {
-            await getFireBase(formData);  
             changeStatus();
+            await getFireBase(formData);  
             setTimeout(()=>{
                 reset({
                     login: '',
                     pass: ''
                 })
-            },3000)
+                 
+                navigate('/authorization')                
+                
+            },1000)
            
         }catch(e){
             console.log(e)
-            throw e
+            
         }
         
     }
@@ -60,6 +62,10 @@ const Registration = () =>{
                                             value: 6,
                                             message: 'Минимум 6 символов'
                                         },
+                                        pattern: {
+                                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                            message: 'Введите корректный email'
+                                        }
                                     })}
                                     onBlur={()=>clearErrors('login')}
                                     placeholder='email'
@@ -77,8 +83,8 @@ const Registration = () =>{
                                     {...register('pass', {
                                         required: "Пароль обязателен", 
                                         minLength:{
-                                            value: 5,
-                                            message: 'Минимум 5 символов'
+                                            value: 8,
+                                            message: 'Минимум 8 символов'
                                         }})
                                     }
                                     onBlur={()=>clearErrors('pass')}
@@ -88,13 +94,15 @@ const Registration = () =>{
                                     type="text" 
                                     name="pass" 
                                     id='pass'
-                                    style={errors.login && {'border': '1px solid red'}}/>
+                                    style={errors.pass && {'border': '1px solid red'}}/>
                                     {errors.pass && <p style={{'color': 'red', 'fontSize': '18px', 'marginTop': '5px'}}>{errors.pass?.message as string}</p>}
         
                                 </div>
                                 <button 
                                 onClick={handleSubmit(onSubmit)} 
-                                type="button">Зарегистрироваться</button>
+                                type="button"
+                                disabled =  {statusRegistration}
+                                >Зарегистрироваться</button>
                             </form>
                             <div className='block-link'>
                                 <Link className='link' to={'/authorization'}>Авторизация</Link>

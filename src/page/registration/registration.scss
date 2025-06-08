@@ -72,13 +72,18 @@
             line-height: 28px;
             border-radius: 4px;
             background: rgb(255, 255, 255);
+            &:disabled{
+                color: rgb(163, 151, 151);
+                cursor:wait;
+            }
         }
          &__success{
             text-align: center;
-            font-size: 18px;
+            font-size: 20px;
             color: green;
             font-weight: 600;
             margin-bottom: 20px;
+            letter-spacing: 0.5px;
         }
 }
 
