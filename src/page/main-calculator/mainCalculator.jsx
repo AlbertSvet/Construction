@@ -5,6 +5,7 @@ import { useEffect } from "react"
 const MainCalculator = () =>{
     const singOut = useOut((state)=>state.zusOut)
     const user = auth.currentUser
+   
     const navigate = useNavigate();
 
     useEffect(()=>{
@@ -14,7 +15,11 @@ const MainCalculator = () =>{
     },[user])
     const handleOut = async () =>{
         await singOut()
-        navigate('/authorization')
+        navigate('/authorization', {replace:true})
+
+        // setTimeout(()=>{
+        //     navigate('/', {replace:true})
+        // },0)
     }
     return(
         <div>

@@ -2,55 +2,90 @@ import { useEffect} from 'react'
 import {useStore} from '../../store/store'
 import { useForm} from "react-hook-form"
 import { Link, useNavigate } from 'react-router-dom'
+
+import { shallow } from 'zustand/shallow';
 import './registration.scss'
 
 interface formData {
     [key: string]:string
 }
 
-const Registration = () =>{
-    const getFireBase = useStore((state)=> state.zusGet);
-    const usersList = useStore((state)=>state.zusForm);
-    const changeStatus = useStore((state)=>state.changeStatus)
+const Registration = () =>{  
+    const zusForm = useStore((state) => state.zusForm)
     const statusRegistration = useStore((state) => state.status)
-    const navigate = useNavigate()
-     const { register, handleSubmit, formState: {errors}, clearErrors,reset} = useForm({
-            mode: 'onBlur',
-        });
+    const errorMesages = useStore((state) => state.errorMesage)
+    const getFireBase = useStore((state) => state.zusGet)
+    const changeErrorMesage = useStore((state) => state.changeErrorMesage)
+    // не совсем понял почему происходит бесконечный рендер при таком способе деструктуризации. 
+    // решение использовать  shallow. но и тут возникает ошибка 
+    // const {
+    //     zusForm,
+    //     loading,
+    //     statusRegistration,
+    //     errorMesages,
+    //     changeErrorMesag,
+    //     changeStatus, 
+    //     getFireBase,
+              
+    //     } = useStore(
+    //         (state)=>({
+    //         zusForm: state.zusForm,
+    //         loading: state.loading,
+    //         statusRegistration: state.status,
+    //         errorMesages: state.errorMesage,
+    //         changeErrorMesag:state.changeErrorMesage,
+    //         changeStatus: state.changeStatus,
+    //         getFireBase: state.zusGet,
+            
 
-    useEffect(()=>{
-        console.log(usersList)
-       
-    },[usersList])
+    //     }),
+    //     // shallow
+    // ); 
+  
 
-    const onSubmit = async (formData:formData) =>{
-        try {
-            changeStatus();
+
+
+    const navigate = useNavigate();
+    const { register, handleSubmit, formState: {errors}, clearErrors,reset} = useForm({
+        mode: 'onBlur',
+    });
+
+    // ====================
+  const onSubmit = async (formData:formData) =>{
             await getFireBase(formData);  
+    }
+    useEffect(()=>{
+
+        if(statusRegistration){
             setTimeout(()=>{
                 reset({
                     login: '',
                     pass: ''
                 })
-                 
                 navigate('/authorization')                
-                
-            },1000)
-           
-        }catch(e){
-            console.log(e)
+                },1000)
             
-        }
-        
-    }
+            }else{
+                setTimeout(()=>{
+                changeErrorMesage()
+                reset({
+                    login: '',
+                    pass: ''
+                })
+                },1300)
+            }
+    
+    },[statusRegistration, errorMesages])
+
+  
 
     return(
         <section className='registration'>
                     <div className='registration__container _container'>
                         <h1 className='registration__title'>Регистрация администратора</h1>
                         <div className='registration__block-form'>
-                            
-                            {statusRegistration && <p className='registration__success'>Регистрация прошла успешно</p>}
+                        {statusRegistration ? <p className='registration__success'>Регистрация прошла успешно</p> : ''}
+                        {errorMesages ? <p className='registration__success'>Пользователь существует</p> : ''}
                             <form action="#">
                                 <div className='registration__block-input'>
                                     

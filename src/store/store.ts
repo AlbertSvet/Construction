@@ -5,16 +5,20 @@ import { doc, setDoc } from "firebase/firestore";
 import {auth, db} from '../firebase/firebaseConfig'
 
 import {create} from 'zustand'
+import { BlobOptions } from "buffer";
 
 interface User {
     [key:string]: string
 }
-interface Todos {
+export interface Todos {
     zusForm: User[],
     loading: boolean,
     status: boolean,
+    errorMesage: null | boolean,
+    changeErrorMesage: ()=> void,
     changeStatus: ()=>void
-    zusGet: (data:Record<string, string>) => Promise<void>
+    zusGet: (data:Record<string, string>) => Promise<void>,
+    
 }
 interface Aut extends Pick<Todos, 'loading'>{
     zusAut: (data:Record<string,string>) => Promise<void>
@@ -27,10 +31,16 @@ interface LogOut {
 
 
 // Регистрация
-const useStore = create<Todos>((set) =>({
+ const useStore = create<Todos>((set) =>({
     zusForm: [],
     loading: false,
     status: false,
+    errorMesage: false,
+    changeErrorMesage: ()=>{
+        set((state)=>({
+            errorMesage: false
+        }))
+    },
     changeStatus: ()=>{
         setTimeout(()=>{
              set(()=>({
@@ -57,15 +67,15 @@ const useStore = create<Todos>((set) =>({
             set((state) =>({
                 zusForm: [...state.zusForm,data],
                 loading: false,
-                status: false
+                status: true,
+                errorMesage: false
             }))
-        } catch (error) {
-            console.log(error)
-            alert('Повторите попытку')
+        } catch (error) {            
             set(()=>{
                 return{
                     loading: false,
-                    status: false
+                    status: false,
+                    errorMesage: true
                 }
             })
         }
