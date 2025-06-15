@@ -73,5 +73,13 @@
             border-radius: 4px;
             background: rgb(255, 255, 255);
         }
+        &__failure{
+            text-align: center;
+            font-size: 20px;
+            color: red;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
 }
 

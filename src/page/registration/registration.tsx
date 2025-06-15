@@ -1,4 +1,4 @@
-import { useEffect} from 'react'
+import { useEffect, useState} from 'react'
 import {useStore} from '../../store/store'
 import { useForm} from "react-hook-form"
 import { Link, useNavigate } from 'react-router-dom'
@@ -11,8 +11,8 @@ interface formData {
 }
 
 const Registration = () =>{  
-    const zusForm = useStore((state) => state.zusForm)
     const statusRegistration = useStore((state) => state.status)
+    const changeStatus = useStore((state) => state.changeStatus)
     const errorMesages = useStore((state) => state.errorMesage)
     const getFireBase = useStore((state) => state.zusGet)
     const changeErrorMesage = useStore((state) => state.changeErrorMesage)
@@ -41,9 +41,8 @@ const Registration = () =>{
     //     }),
     //     // shallow
     // ); 
-  
-
-
+    const [count, setCount] = useState<number>(3)
+    
 
     const navigate = useNavigate();
     const { register, handleSubmit, formState: {errors}, clearErrors,reset} = useForm({
@@ -54,28 +53,69 @@ const Registration = () =>{
   const onSubmit = async (formData:formData) =>{
             await getFireBase(formData);  
     }
-    useEffect(()=>{
 
-        if(statusRegistration){
-            setTimeout(()=>{
-                reset({
-                    login: '',
-                    pass: ''
+    useEffect(()=>{
+        let interval: number | null = null;
+        let timeout1: number | null = null;
+        let timeout2: number | null = null;
+
+        switch(errorMesages){
+            case 'success': 
+            // window. для явности и типовой безопасности, помогает устранить неоднозначность. Таким образом указываем точно что это браузерный таймер
+             interval = window.setInterval(()=>{
+                setCount((prev) => {
+                    if(prev === 0){
+                        if(interval !== null){
+                             clearInterval(interval);
+                        }                           
+                        return 0
+                    }else{
+                        return prev - 1
+                    }
                 })
-                navigate('/authorization')                
                 },1000)
-            
-            }else{
-                setTimeout(()=>{
-                changeErrorMesage()
-                reset({
-                    login: '',
-                    pass: ''
-                })
+
+            changeStatus();
+
+            timeout1 = window.setTimeout(()=>{                    
+                    reset({
+                        login: '',
+                        pass: ''
+                    })
+                    navigate('/authorization')   
+                    changeStatus();  
+                    changeErrorMesage();        
+                    },3000)
+                    break;
+
+            case 'failure': 
+              timeout2 = window.setTimeout(()=>{
+                    changeErrorMesage()
+                    reset({
+                        login: '',
+                        pass: ''
+                    })
                 },1300)
+                break;
+
+            default: 
+            break;
+            
+        }
+
+        return () => {
+            if(interval !== null){
+                clearInterval(interval)
             }
+            if(timeout1 !== null){
+                clearTimeout(timeout1)
+            }
+            if(timeout2 !== null){
+                clearTimeout(timeout2)
+            }
+        }
     
-    },[statusRegistration, errorMesages])
+    },[errorMesages])
 
   
 
@@ -84,8 +124,8 @@ const Registration = () =>{
                     <div className='registration__container _container'>
                         <h1 className='registration__title'>Регистрация администратора</h1>
                         <div className='registration__block-form'>
-                        {statusRegistration ? <p className='registration__success'>Регистрация прошла успешно</p> : ''}
-                        {errorMesages ? <p className='registration__success'>Пользователь существует</p> : ''}
+                        {errorMesages === 'success' && <p className='registration__success'>Регистрация прошла успешно. Вы будете перенаправлены на страницу авторизации через: <span>{count} </span></p>}
+                        {errorMesages === 'failure' && <p className='registration__failure'>Пользователь c таким логином существует</p>}
                             <form action="#">
                                 <div className='registration__block-input'>
                                     

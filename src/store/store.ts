@@ -3,24 +3,29 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { signOut } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import {auth, db} from '../firebase/firebaseConfig'
+import { User } from "firebase/auth";
 
 import {create} from 'zustand'
-import { BlobOptions } from "buffer";
 
-interface User {
+interface Users {
     [key:string]: string
 }
 export interface Todos {
-    zusForm: User[],
+    zusForm: Users[],
     loading: boolean,
     status: boolean,
-    errorMesage: null | boolean,
+    errorMesage: null | string,
     changeErrorMesage: ()=> void,
     changeStatus: ()=>void
     zusGet: (data:Record<string, string>) => Promise<void>,
     
 }
 interface Aut extends Pick<Todos, 'loading'>{
+    user: User | null,
+    authorizationMessage: null | string,
+    setUser: (user: User | null) => void,
+    clearUser: ()=>void,
+    changeAuthMessage: () => void,
     zusAut: (data:Record<string,string>) => Promise<void>
 }
 interface LogOut {
@@ -28,6 +33,11 @@ interface LogOut {
     zusOut: () => Promise<void>
 }
 
+// tabs 
+interface Tabs {
+    tabIndex: number,   
+    changeActive: (index:number)=>void
+}
 
 
 // Регистрация
@@ -35,26 +45,18 @@ interface LogOut {
     zusForm: [],
     loading: false,
     status: false,
-    errorMesage: false,
+    errorMesage: null,
     changeErrorMesage: ()=>{
-        set((state)=>({
-            errorMesage: false
+        set(()=>({
+            errorMesage: null
         }))
     },
     changeStatus: ()=>{
-        setTimeout(()=>{
-             set(()=>({
-                status:true
+             set((state)=>({
+                status: !state.status
             }))
-        },500)
-       
     },
     zusGet: async (data) => {
-        set(()=>{
-            return {
-                loading: true
-            }
-        })
         try {
             const {login, pass} = data;
             const userCred = await createUserWithEmailAndPassword(auth, login, pass);
@@ -66,16 +68,15 @@ interface LogOut {
             
             set((state) =>({
                 zusForm: [...state.zusForm,data],
-                loading: false,
-                status: true,
-                errorMesage: false
+                loading: true,
+                errorMesage: 'success'
             }))
         } catch (error) {            
             set(()=>{
                 return{
                     loading: false,
                     status: false,
-                    errorMesage: true
+                    errorMesage: 'failure'
                 }
             })
         }
@@ -85,30 +86,45 @@ interface LogOut {
 
 // Авторизация
 const useStoreAut = create<Aut>((set) =>({
-    loading: false,
-   
-    zusAut: async (data) =>{
+    user: null,
+    loading: true,
+    authorizationMessage: null,
+    setUser: (user)=> {
         set(()=>({
-            loading: true
+            user: user,
+            loading: false
         }))
+    },
+    clearUser: () => {
+        set(() =>({
+            user: null,
+            loading: false
+        }))
+    },
+    changeAuthMessage: () =>{
+        set(()=>({
+            authorizationMessage: null
+        }))
+    },
+    zusAut: async (data) =>{      
         try{
             const {login, pass} = data
             const userAut = await signInWithEmailAndPassword(auth, login, pass)
             const user = userAut.user
-           
-            console.log('User logged:', user);
+           set(() => ({
+                authorizationMessage: 'success'
+           }))
         } catch(e){
 
             set(()=>({
-                loading: false
+                
+                authorizationMessage: 'failure'
             }))
-            alert('неверный логин или пароль')
-            console.log(e)
           
         }
     }
 }))
-
+// выход пользователя
 const useOut = create<LogOut>((set)=>({
     loading: false,
     zusOut: async () =>{
@@ -128,4 +144,14 @@ const useOut = create<LogOut>((set)=>({
     }
 }))
 
-export {useStore, useStoreAut, useOut}
+// табы 
+const useTabs = create<Tabs>((set)=> ({
+    tabIndex: 0,
+    changeActive: (index)=>{
+        set(() => ({
+            tabIndex: index
+        }))
+    }
+}))
+
+export {useStore, useStoreAut, useOut,useTabs}

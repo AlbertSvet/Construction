@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../header/Header';
+import { auth } from '../../firebase/firebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useStoreAut } from '../../store/store';
 import Registration from '../../page/registration/registration';
 import Authorization from '../../page/authorization/authorization';
 import MainCalculator from '../../page/main-calculator/mainCalculator';
@@ -9,6 +12,20 @@ import bg from './Background.jpg'
 import './App.scss';
 
 function App() {
+  const user = useStoreAut((state)=>state.user);
+  const setUser = useStoreAut((state)=>state.setUser);
+  const clearUser = useStoreAut((state)=>state.clearUser);
+
+  useEffect(()=>{
+    const unsubscribe = onAuthStateChanged (auth,(user)=>{
+      if(user){
+        setUser(user);
+      }else{
+         clearUser();
+      }
+    })
+    return () => unsubscribe();
+  },[])
   return (
     <Router>
       <div className="wrapper" style={{'--fon': `url(${bg})`} as React.CSSProperties}>
