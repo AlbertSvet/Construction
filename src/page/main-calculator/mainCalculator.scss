@@ -62,6 +62,12 @@
 			}
 		}
 
+			&__grid{
+				display: grid;
+				grid-template-columns: minmax(830px, 70%) minmax(200px, 30%);
+				grid-column-gap: 50px;
+			}
+
 		// main-block
 
 		&__main-block {

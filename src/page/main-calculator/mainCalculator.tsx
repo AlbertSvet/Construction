@@ -1,11 +1,14 @@
 import RequiredWork from "../../component/required-work/RequiredWork"
 import Square from "../../component/square/Square"
+import TotalCost from "../../component/totalcost/TotalCost"
+
 import { auth } from "../../firebase/firebaseConfig"
 import { useOut, useTabs } from "../../store/store"
 import { useStoreAut } from "../../store/store"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import './mainCalculator.scss';
+
 const MainCalculator = () =>{
     const singOut = useOut((state)=>state.zusOut);
     const activeTab = useTabs((state)=> state.tabIndex)
@@ -45,11 +48,17 @@ const MainCalculator = () =>{
                         <button onClick={()=>changeActive(0)} type="button" className= {`${classNames} ${activeTab === 0 ? 'active': ''}`} >Площадь помещения</button>
                         <button onClick={()=>changeActive(1)} type="button" className={`${classNames} ${activeTab === 1 ? 'active': ''}`}>Необходимые работы</button>
                     </div>
-                    <div className="mainCalculator__main-block">
-                        {activeTab === 0 &&  <Square/>}
-                        {activeTab === 1 &&  <RequiredWork/>}
-                     
+                    <div className="mainCalculator__grid">
+                        <div className="mainCalculator__main-block">
+                            {activeTab === 0 &&  <Square/>}
+                            {activeTab === 1 &&  <RequiredWork/>}
+                        </div>
+                        <div>
+                            <TotalCost/>
+
+                        </div>
                     </div>
+                   
                 
             </div>
             

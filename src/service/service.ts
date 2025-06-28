@@ -6,17 +6,17 @@ interface data {
 
 const useServ = () =>{
     const {request} = useHttp();
-    const _apiBase = 'sdfsdf'
+    const _apiBase = 'http://localhost:3001/'
 
     
     //метод получения данных
-    const useGet = async () =>{
-        const res = await request({url: _apiBase})
+    const getData = async (url: string) =>{
+        const res = await request({url: _apiBase + url})
         return  res
     }
 
     //  метод отправки данных 
-    const usePost = async (data:data) =>{
+    const postData = async (data:data) =>{
         return await request({
             url: _apiBase,
             method: "POST",
@@ -25,7 +25,7 @@ const useServ = () =>{
        
     }
 
-    return {useGet, usePost}
+    return {getData, postData}
 }
 
 export default useServ

@@ -76,7 +76,7 @@
 
 		&__notes-block {
                 font-family: Roboto;
-                
+                margin-top: 50px;
                 font-weight: 400;
                 line-height: 21px;
                 letter-spacing: 0%;
@@ -103,5 +103,55 @@
 
 		&__li {
                  list-style-type: disc;
+        }
+
+        &__main-block{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-row-gap: 25px;
+            grid-column-gap: 90px;
+        }
+
+        &__item{
+            display: flex;
+            align-items: center;
+            font-family: Roboto;
+            color: rgb(255, 255, 255);
+            span{
+                display: inline-block;
+                margin-left: 6px;
+            }
+            sup{
+                font-size: 9px;
+            }
+            // justify-content: space-between;
+            label{
+                color: rgb(255, 255, 255);
+                font-family: Roboto;
+                font-size: 18px;
+                font-weight: 400;
+                line-height: 21px;
+                
+            }
+            input{
+                background-color: transparent;
+                color: rgba(255, 254, 254, 0.5);
+                font-family: Roboto;
+                font-size: 18px;
+                font-weight: 700;
+                line-height: 21px;
+                border-bottom: 1px solid rgb(255, 255, 255,.5);
+                text-align: center;
+                padding: 2px 5px;
+                margin-left: auto;
+                flex:  0 1 66px;
+                width: 100%;
+                    // 
+                &::-webkit-outer-spin-button,
+                &::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+            }
         }
 }

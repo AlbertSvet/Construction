@@ -1,0 +1,197 @@
+{
+  "squares": [
+    {
+      "name": "Гостинная",
+      "value": 0,
+      "id": "living_room"
+    },
+    {
+      "name": "Коридор №2",
+      "value": 0,
+      "id": "corridor_2"
+    },
+    {
+      "name": "Гостинная с кухней (студия)",
+      "value": 0,
+      "id": "studio_living_kitchen"
+    },
+    {
+      "name": "Кухня",
+      "value": 0,
+      "id": "kitchen"
+    },
+    {
+      "name": "Спальня №1",
+      "value": 0,
+      "id": "bedroom_1"
+    },
+    {
+      "name": "Кладовая",
+      "value": 0,
+      "id": "storage"
+    },
+    {
+      "name": "Спальня №2",
+      "value": 0,
+      "id": "bedroom_2"
+    },
+    {
+      "name": "Балкон №1",
+      "value": 0,
+      "id": "balcony_1"
+    },
+    {
+      "name": "Детская №1",
+      "value": 0,
+      "id": "childroom_1"
+    },
+    {
+      "name": "Балкон №2",
+      "value": 0,
+      "id": "balcony_2"
+    },
+    {
+      "name": "Детская №2",
+      "value": 0,
+      "id": "childroom_2"
+    },
+    {
+      "name": "Лоджия",
+      "value": 0,
+      "id": "loggia"
+    },
+    {
+      "name": "Кабинет",
+      "value": 0,
+      "id": "office"
+    },
+    {
+      "name": "Санузел (ванная или душ)",
+      "value": 0,
+      "id": "bathroom"
+    },
+    {
+      "name": "Коридор №1",
+      "value": 0,
+      "id": "corridor_1"
+    },
+    {
+      "name": "Санузел (туалет)",
+      "value": 0,
+      "id": "toilet"
+    }
+  ],
+  
+  "operations": [
+    {
+      "name": "Демонтаж, зачистка старой отделки",
+      "count": "20",
+      "unit": "руб/м2",
+      "id": "destruction"
+    },
+    {
+      "name": "Откосы оконные",
+      "count": "20",
+      "unit": "руб/м2",
+      "id": "windows"
+    },
+    {
+      "name": "Штукатурка стен",
+      "count": "20",
+      "unit": "руб/м2",
+      "id": "plaster_walls"
+    },
+    {
+      "name": "Стяжка пола",
+      "count": "20",
+      "unit": "руб/м2",
+      "id": "floor_screed"
+    },
+    {
+      "name": "Шпаклевка стен",
+      "count": "20",
+      "unit": "руб/м2",
+      "id": "putty_walls"
+    },
+    {
+      "name": "Укладка ламината",
+      "count": "20",
+      "unit": "руб/м2",
+      "id": "laminate"
+    },
+    {
+      "name": "Поклейка обоев",
+      "count": "20",
+      "unit": "руб/м2",
+      "id": "wallpaper"
+    },
+    {
+      "name": "Установка плинтуса на пол",
+      "count": "20",
+      "unit": "руб/м",
+      "id": "floor_baseboard"
+    },
+    {
+      "name": "Покраска стен",
+      "count": "20",
+      "unit": "руб/м2",
+      "id": "paint_walls"
+    },
+    {
+      "name": "Плитка санузлы, пол кухни, коридор",
+      "count": "20",
+      "unit": "руб/м2",
+      "id": "tiles_bath_kitchen"
+    },
+    {
+      "name": "Натяжной / гипсокартонный потолок",
+      "count": "20",
+      "unit": "руб/м2",
+      "id": "ceilings"
+    },
+    {
+      "name": "Разводка, установка сантехники",
+      "count": "30000",
+      "unit": "руб",
+      "id": "plumbing"
+    },
+    {
+      "name": "Покраска потолка",
+      "count": "20",
+      "unit": "руб/м2",
+      "id": "paint_ceiling"
+    },
+    {
+      "name": "Электрика: розетки, выключ., свет",
+      "count": "40000",
+      "unit": "руб",
+      "id": "electricity"
+    },
+    {
+      "name": "Шпаклевка потолка",
+      "count": "20",
+      "unit": "руб/м2",
+      "id": "putty_ceiling"
+    },
+    {
+      "name": "Вставка межкомнатных дверей",
+      "count": "10000",
+      "unit": "руб/шт/25м2",
+      "id": "interior_doors"
+    },
+    {
+      "name": "Плинтус потолочный",
+      "count": "10",
+      "unit": "руб/м",
+      "id": "ceiling_baseboard"
+    },
+    {
+      "name": "Вставка входной двери",
+      "count": "10000",
+      "unit": "руб/шт",
+      "id": "entrance_door"
+    }
+  ]
+
+
+}
