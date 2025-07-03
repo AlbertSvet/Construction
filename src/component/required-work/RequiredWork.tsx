@@ -6,9 +6,12 @@ const RequiredWork = () =>{
     const getNecessaryWork = necessaryWork((state) => state.getNecessaryWork);
     const storeWork = necessaryWork((state) => state.work);
     const updateWork = necessaryWork((state)=> state.updateWork)
+    const status = necessaryWork((state)=> state.status)
 
     useEffect(()=>{
-        getNecessaryWork({url: 'http://localhost:3001/operations'})
+        if(!status){
+            getNecessaryWork({url: 'http://localhost:3001/operations'})
+        }
     },[])
     const getValue = (e: ChangeEvent<HTMLInputElement>) =>{
         const {checked , name, id} = e.target;

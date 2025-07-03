@@ -6,19 +6,17 @@ import { Value } from 'sass';
 
 const Square = () =>{
 
-const squareData = squareStore((state)=>state.squareData);
-const getSquareData = squareStore((state) => state.getSquareData);
+// const squareData = squareStore((state)=>state.squareData);
+// const getSquareData = squareStore((state) => state.getSquareData);
 // console.log(squareData) почему выводить Object object  
 // console.log(squareData)
 const ceilingHeight = squareStore((state)=> state.ceilingHeight)
 const getCeilingHeight = squareStore((state)=> state.getCeilingHeight)
 
-
-
 const {name, id, value} = ceilingHeight
-useEffect(()=>{
-    getSquareData({url:'http://localhost:3001/squares'})
-},[])
+// useEffect(()=>{
+//     getSquareData({url:'http://localhost:3001/squares'})
+// },[])
 
 const getDataCeilingHeight = (e:ChangeEvent<HTMLInputElement>) =>{
     const {name, value, id} = e.target;
@@ -47,7 +45,7 @@ const getDataCeilingHeight = (e:ChangeEvent<HTMLInputElement>) =>{
 
                 <form action="#">
                     <div className='square__main-block'>
-                      <View squareData={squareData}/>
+                      <View />
                     </div>
                 </form>
 
@@ -67,9 +65,19 @@ interface squareParams {
     value: number,
     id: string
 }
-const View = ({squareData}:{squareData:squareParams[]}) =>{
-   
+const View = () =>{
+    const squareData = squareStore((state)=>state.squareData);
+    const getSquareData = squareStore((state) => state.getSquareData);
     const updateSquareData = squareStore((state) => state.updateSquareData);
+    const status = squareStore((state)=>state.status)
+    console.log(status)
+
+    useEffect(()=>{
+        if(!status){
+            getSquareData({url:'http://localhost:3001/squares'})
+
+        }
+    },[])
 
     const getValue = (e: React.ChangeEvent<HTMLInputElement>) =>{
         const {name, value, id} = e.target;

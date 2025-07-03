@@ -7,6 +7,7 @@ import { User } from "firebase/auth";
 
 import {create} from 'zustand'
 import { persist } from 'zustand/middleware';
+import { set } from "react-hook-form";
 
 interface Users {
     [key:string]: string
@@ -168,10 +169,10 @@ interface SquareItem {
     id: string
 }
 interface Square {
-    loading: boolean,
+    status: boolean,
     ceilingHeight: SquareItem,
     squareData: SquareItem[],
-    totalArea: number | string,
+    totalArea: number ,
     updateTotalArea: (data:SquareItem[]) => void
     getCeilingHeight: (data: SquareItem) => void,
     updateSquareData: (data:SquareItem) => void,
@@ -180,7 +181,8 @@ interface Square {
 
 // получение данных Площади
 const squareStore = create<Square>((set) => ({
-    loading: false,
+    status: false,
+    
     // высота потолка//
     ceilingHeight: { 
         name: 'height',
@@ -219,9 +221,6 @@ const squareStore = create<Square>((set) => ({
         }))
     } ,
     getSquareData: async ({url,method = 'GET',  headers = { "Content-Type": "application/json" }}:params) => {
-        set(() => ({
-            loading: true
-        }))
         try{
             const response = await fetch(url, {
             method: method,
@@ -232,13 +231,13 @@ const squareStore = create<Square>((set) => ({
             }
             const data = await response.json();
             set(()=>({
-                loading: false,
+                status: true,
                 squareData: [...data]
             }))
             return data
         }catch(e){
             set(() => ({
-            loading: false
+            status: true
         }))
             console.log(e)
         }
@@ -260,11 +259,13 @@ interface CheckedInput {
 }
 interface NecessaryWork {
     work: Work[],
+    status: boolean
     updateWork: (data: CheckedInput) => void
     getNecessaryWork: (data: params) => Promise<void>
 }
 const necessaryWork = create<NecessaryWork>((set)=>({
     work: [],
+    status: false,
     updateWork: (data) =>{
         set((prevState) =>({
             work: prevState.work.map(item =>{
@@ -290,7 +291,8 @@ const necessaryWork = create<NecessaryWork>((set)=>({
             }
             const data = await response.json();
             set(() => ({
-                work: [...data]
+                work: [...data],
+                status: true
             }))
         } catch (error) {
             throw new Error ('Ошибка')
@@ -299,4 +301,39 @@ const necessaryWork = create<NecessaryWork>((set)=>({
     }
 }))
 
-export {useStore, useStoreAut, useOut,useTabs, squareStore,necessaryWork}
+// //  рассчеты стоимости работ 
+interface Calculation {
+    totalPrice: number,
+    priceCalculation: (totalSquare: number, totalCheckWork:Work[]) => void
+}
+const calculation = create<Calculation>((set)=>({
+    totalPrice: 0,
+    // демонтаж,  зачистка старой отделки, натяжной или гипсокартонный потолок, покраска потолка, шпаклевка потолка, стяжка пола, укладка ламината 
+    priceCalculation: (totalSquare, totalCheckWork) =>{
+        const countCheckedWork = totalCheckWork.filter((item)=>{
+            if(item.checked){ 
+                switch (item.id){
+                    case 'destruction': 
+                        return item
+                    case 'ceilings':
+                        return item
+                    case 'paint_ceiling':
+                        return item
+                    case 'putty_ceiling':
+                        return item
+                    case 'floor_screed':
+                        return item
+                    case 'laminate':
+                        return item
+
+                }
+            }
+        })
+        const totalPriceCalculat  = totalSquare * (20 * countCheckedWork.length);
+        set(() => ({
+            totalPrice: totalPriceCalculat
+        }))
+    }
+}))
+
+export {useStore, useStoreAut, useOut,useTabs, squareStore,necessaryWork,calculation}

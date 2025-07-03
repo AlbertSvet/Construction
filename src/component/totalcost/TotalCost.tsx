@@ -1,5 +1,5 @@
 import './totalCost.scss'
-import { squareStore } from '../../store/store'
+import { squareStore,necessaryWork,calculation } from '../../store/store'
 import { useEffect } from 'react'
 
 
@@ -8,11 +8,44 @@ const TotalCost = () =>{
     const totalArea = squareStore((state)=> state.totalArea)
     const updateTotalArea = squareStore((state) => state.updateTotalArea)
     const squareData = squareStore((state)=>state.squareData);
+    const work = necessaryWork((state)=>state.work);
+
+    const totalPrice = calculation((state)=> state.totalPrice);
+    const priceCalculation = calculation((state)=>state.priceCalculation)
+
     useEffect(()=>{
         updateTotalArea(squareData)
     },[squareData])
+    useEffect(()=>{
+        priceCalculation(totalArea, work)
+    },[totalArea, work])
+ // демонтаж,  зачистка старой отделки, натяжной или гипсокартонный потолок, покраска потолка, шпаклевка потолка, стяжка пола, укладка ламината 
+    // const workCheked = work.filter((item)=>{
+    //     if(item.checked){
+    //         switch (item.id){
+    //             case 'destruction': 
+    //                 return item
+    //             case 'ceilings':
+    //                 return item
+    //             case 'paint_ceiling':
+    //                 return item
+    //             case 'putty_ceiling':
+    //                 return item
+    //             case 'floor_screed':
+    //                 return item
+    //             case 'laminate':
+    //                 return item
+
+    //         }
+    //     }
+       
+    // })
+  
+    // const totalCount = () =>{
+    //    return totalArea * (20 * workCheked.length)
+    // }
+
     // const squareData = squareStore((state) => state.squareData);
-    // const work = necessaryWork((state)=>state.work);
 
     // let chekWork = 0; // количествой отмеченных чекбоксов
     // work.forEach(item =>{
@@ -38,7 +71,7 @@ const TotalCost = () =>{
    
     return(
         <div className='mainCalculator__totalCost totalCost'>
-            <p className='totalCost__total-rub'>{totalArea} руб</p>
+            <p className='totalCost__total-rub'>{totalPrice} руб</p>
             <p className='totalCost__text'>Примерная общая стоимость работ</p>
             <p className='totalCost__total-usd'>0 usd</p>
             <p className='totalCost__text'>Сумма в долларах США по текущему курсу</p>
