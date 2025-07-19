@@ -1,31 +1,21 @@
 import './square.scss';
 import { squareStore } from '../../store/store';
-import { ChangeEvent, useEffect } from 'react';
-import { Value } from 'sass';
+import { ChangeEvent, useEffect, useRef, useState} from 'react';
+
 
 
 const Square = () =>{
 
-// const squareData = squareStore((state)=>state.squareData);
-// const getSquareData = squareStore((state) => state.getSquareData);
-// console.log(squareData) почему выводить Object object  
-// console.log(squareData)
 const ceilingHeight = squareStore((state)=> state.ceilingHeight)
 const getCeilingHeight = squareStore((state)=> state.getCeilingHeight)
 
-const {name, id, value} = ceilingHeight
-// useEffect(()=>{
-//     getSquareData({url:'http://localhost:3001/squares'})
-// },[])
+
 
 const getDataCeilingHeight = (e:ChangeEvent<HTMLInputElement>) =>{
     const {name, value, id} = e.target;
     const parsI = Number.parseInt(value, 10);
-    getCeilingHeight({
-        name: name,
-        value: isNaN(parsI) ? 0 : parsI,
-        id: id
-    })
+    const vall = isNaN(parsI) ? 0 : parsI;
+    getCeilingHeight(vall)
 }   
     return (
          <div className='mainCalculator__square square'>
@@ -34,10 +24,8 @@ const getDataCeilingHeight = (e:ChangeEvent<HTMLInputElement>) =>{
                     <p className='square__height-text'>Высота потолка в квартире:</p>
                     <input 
                      type="number" 
-                     name={name} 
                      placeholder='0.0' 
-                     id={id} 
-                     value={value === 0 ? '' : value}
+                     value={ceilingHeight === 0 ?  '' : ceilingHeight}
                      onChange={(e) => getDataCeilingHeight(e)}/>
                     <span>M</span>
                 </div>
@@ -70,8 +58,9 @@ const View = () =>{
     const getSquareData = squareStore((state) => state.getSquareData);
     const updateSquareData = squareStore((state) => state.updateSquareData);
     const status = squareStore((state)=>state.status)
-    console.log(status)
 
+    const [activeId, setActiveId] = useState<string | null>(null)
+    console.log(activeId)
     useEffect(()=>{
         if(!status){
             getSquareData({url:'http://localhost:3001/squares'})
@@ -90,23 +79,30 @@ const View = () =>{
        updateSquareData(data)
       
     }
-  
+    
+       
+        
         return (
             
             <>
                 
                 {squareData.map(({name,id, value},i)=> {
+                    const isActive = activeId === id || value > 0;
+                    const activeInputClass = `square__input${isActive ? '  active-inp' : ''}`;
                     return (
                         
                         <div className='square__item' key={i}>
                             <label htmlFor={id}>{name}</label>
                             <input 
+                            onFocus={()=>setActiveId(id)}
+                            onBlur={()=>setActiveId(null)}
                             onChange={(e)=>getValue(e)} 
                             type="number" 
                             placeholder='0.0' 
                             name={name} 
                             value={value === 0 ? '' : value}
-                            id={id}/>
+                            id={id}
+                            className={activeInputClass}/>
                             <span>М<sup>2</sup></span>
                         </div>
                         )            

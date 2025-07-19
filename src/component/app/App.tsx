@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import Header from '../header/Header';
+import TodoList from '../todoList/TodoList';
 import { auth } from '../../firebase/firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useStoreAut } from '../../store/store';
@@ -26,6 +27,7 @@ function App() {
     })
     return () => unsubscribe();
   },[])
+  
   return (
     <Router>
       <div className="wrapper" style={{'--fon': `url(${bg})`} as React.CSSProperties}>
@@ -36,6 +38,7 @@ function App() {
               <Route path='/' element={<Registration/>}/>
               <Route path='/authorization' element={<Authorization/>}/>
               <Route path='/main-calculator' element={<MainCalculator/>}/>
+              <Route path='/todoList' element={<TodoList/>}/>
             </Routes>
           </main>
 

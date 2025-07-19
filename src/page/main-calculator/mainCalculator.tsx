@@ -1,8 +1,6 @@
 import RequiredWork from "../../component/required-work/RequiredWork"
 import Square from "../../component/square/Square"
 import TotalCost from "../../component/totalcost/TotalCost"
-
-import { auth } from "../../firebase/firebaseConfig"
 import { useOut, useTabs } from "../../store/store"
 import { useStoreAut } from "../../store/store"
 import { useNavigate } from "react-router-dom"
@@ -15,7 +13,6 @@ const MainCalculator = () =>{
     const changeActive = useTabs((state)=>state.changeActive)
     const user = useStoreAut((state)=>state.user)
     const loading = useStoreAut((state)=>state.loading)
-    // const user = auth.currentUser
    
     const navigate = useNavigate();
 
@@ -31,8 +28,6 @@ const MainCalculator = () =>{
         await singOut()
         navigate('/authorization', {replace:true})
     }
-    // const activeClass = activeTab === 0 ? 'active' : '';
-
     let classNames = 'mainCalculator__btn'
 
     return(

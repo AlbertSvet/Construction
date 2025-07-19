@@ -1,80 +1,54 @@
 import './totalCost.scss'
 import { squareStore,necessaryWork,calculation } from '../../store/store'
-import { useEffect } from 'react'
+import { useEffect, useState} from 'react'
+
 
 
 const TotalCost = () =>{
     // сумма площади 
-    const totalArea = squareStore((state)=> state.totalArea)
+    const totalArea = squareStore((state)=> state.totalArea) // сумма площади всех
     const updateTotalArea = squareStore((state) => state.updateTotalArea)
-    const squareData = squareStore((state)=>state.squareData);
-    const work = necessaryWork((state)=>state.work);
+    const squareData = squareStore((state)=>state.squareData); // массив площади
+    const work = necessaryWork((state)=>state.work); // массив выбранных работ
 
-    const totalPrice = calculation((state)=> state.totalPrice);
-    const priceCalculation = calculation((state)=>state.priceCalculation)
+    const totalPrice = calculation((state)=> state.totalPrice);// итоговая цена
+    const priceCalculation = calculation((state)=>state.priceCalculation)// главный расчет итоговой цены
+
+    const ceilingHeight = squareStore((state)=> state.ceilingHeight) // высота потолка
 
     useEffect(()=>{
         updateTotalArea(squareData)
     },[squareData])
+
     useEffect(()=>{
-        priceCalculation(totalArea, work)
-    },[totalArea, work])
- // демонтаж,  зачистка старой отделки, натяжной или гипсокартонный потолок, покраска потолка, шпаклевка потолка, стяжка пола, укладка ламината 
-    // const workCheked = work.filter((item)=>{
-    //     if(item.checked){
-    //         switch (item.id){
-    //             case 'destruction': 
-    //                 return item
-    //             case 'ceilings':
-    //                 return item
-    //             case 'paint_ceiling':
-    //                 return item
-    //             case 'putty_ceiling':
-    //                 return item
-    //             case 'floor_screed':
-    //                 return item
-    //             case 'laminate':
-    //                 return item
+        priceCalculation(totalArea, work, ceilingHeight, squareData)
+    },[totalArea, work, ceilingHeight])
 
-    //         }
-    //     }
-       
-    // })
-  
-    // const totalCount = () =>{
-    //    return totalArea * (20 * workCheked.length)
-    // }
+     // метод получения курса валют
+    const getExchangeRat = calculation((state)=> state.getExchangeRat)
+    const [usdRate, setUsdRate] = useState<number | null>(null)
 
-    // const squareData = squareStore((state) => state.squareData);
-
-    // let chekWork = 0; // количествой отмеченных чекбоксов
-    // work.forEach(item =>{
-    //     if(item.checked && item.count === '20'){
-    //        chekWork++
-    //     }
-    // })
-    // let countSq = 0; // сумма площади выбранных комнат
-    // squareData.forEach((item) =>{
-    //     if(item.value !== 0){
-
-    //         countSq += item.value
-    //     }
-    // })
-    // //  let total = 0;
-    //  const total = useMemo(()=>{
-    //         if(chekWork > 0) {
-    //          return countSq * (20 * chekWork)
-    //         }
-    //  },[chekWork])
-    
+    const fetchRate = async () =>{
+        const data = await getExchangeRat('https://open.er-api.com/v6/latest/USD')
+        setUsdRate(data.rates.RUB)
+    }
+    const usdRateRub = () =>{
+        if(usdRate !== null){
+            return (totalPrice / usdRate).toFixed(2)
+        }
+        return '0.00'
+    }
+    useEffect(()=>{
+        fetchRate()
+    },[])  
    
    
     return(
         <div className='mainCalculator__totalCost totalCost'>
             <p className='totalCost__total-rub'>{totalPrice} руб</p>
             <p className='totalCost__text'>Примерная общая стоимость работ</p>
-            <p className='totalCost__total-usd'>0 usd</p>
-            <p className='totalCost__text'>Сумма в долларах США по текущему курсу</p>
+            <p className='totalCost__total-usd'>{usdRateRub()} usd</p>
+            <p className='totalCost__text'>Сумма в долларах США по текущему курсу - {usdRate?.toFixed(2)}</p>
         </div>
     )
 }
