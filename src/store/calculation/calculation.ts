@@ -1,8 +1,11 @@
 import {create} from 'zustand'
 import { Calculation } from './interface.calc'
+import request from '../../services/http.hook'
+
 
 const calculation = create<Calculation>((set)=>({
     totalPrice: 0,
+    totalUsdPrice: 0,
     priceCalculation: (totalSquare, totalCheckWork, ceilingHeight, squareData) =>{
 
         // разводка и установка сантехники электричество и вставка входной двери добавляют
@@ -129,7 +132,10 @@ const calculation = create<Calculation>((set)=>({
             totalPrice: totalCalc
         }))
     },
-    getExchangeRat: async (url: string) => {
+    getExchangeRat: async (url) => {
+        //  не смог переиспользовать метод ошибка сервера Access to fetch at 'https://open.er-api.com/v6/latest/USD' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.Understand this error
+        // const response = await request({url})   
+        // return await response.json();     
         try{
             let response = await fetch(url,{
                 method: 'GET'
@@ -137,7 +143,8 @@ const calculation = create<Calculation>((set)=>({
             if(!response.ok){
                 throw new Error('Ошибка ответа от сервера')
             }
-            return await response.json()
+            return await response.json();
+            
 
         }catch(e){
             console.log(e)
@@ -145,7 +152,13 @@ const calculation = create<Calculation>((set)=>({
         }
         
         
+    },
+    updateTotalUsdPrice: (usdRateRub) =>{
+           set(()=>({
+                totalUsdPrice: usdRateRub()
+           })) 
     }
+   
 }))
 
 export default calculation

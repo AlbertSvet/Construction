@@ -1,7 +1,5 @@
 import './btnPdf.scss'
-import storePdf from '../../store/get-pdf/getPdf'
-import { necessaryWork,squareStore, calculation } from '../../store/store'
-import { createElement } from 'react'
+import { necessaryWork,squareStore, calculation,storePdf } from '../../store/store'
 
 
 const BtnPdf = () =>{
@@ -49,7 +47,8 @@ const BtnPdf = () =>{
             totalUsdPrice: totalUsdPrice
         }
        
-        const response = await postPdf({url:'http://localhost:3002/generate-pdf', body: JSON.stringify(report)})
+        const response = await postPdf({url:'http://localhost:3002/generate-pdf',method: "POST", body: JSON.stringify(report)})
+        // console.log(response)
          const url = window.URL.createObjectURL(response);
          const a = document.createElement('a');
             a.href = url;

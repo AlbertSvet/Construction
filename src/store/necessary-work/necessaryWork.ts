@@ -1,7 +1,7 @@
 import {create} from 'zustand'
 
 import { NecessaryWork } from "./necessaryWork.interfaces"
-
+import request from '../../services/http.hook'
 //  получение данных работ 
 const necessaryWork = create<NecessaryWork>((set)=>({
     work: [],
@@ -20,23 +20,18 @@ const necessaryWork = create<NecessaryWork>((set)=>({
             })
         }))
     },
-    getNecessaryWork: async ({url, method = 'GET', headers = { "Content-Type": "application/json" }}) =>{
+    getNecessaryWork: async ({url}) =>{        
         try {
-            let response = await fetch(url, {
-            method:  method,
-            headers: headers
-        })
-            if(!response.ok) {
-                throw new Error('Ошибака')
-            }
+            const response = await request({url});                    
             const data = await response.json();
             set(() => ({
                 work: [...data],
                 status: true
             }))
-        } catch (error) {
-            throw new Error ('Ошибка')
+        }catch(e){
+            throw e 
         }
+       
        
     }
 }))

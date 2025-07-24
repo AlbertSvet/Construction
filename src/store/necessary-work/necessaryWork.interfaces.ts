@@ -1,5 +1,5 @@
 import { Work } from "../../interfaces-global/work.interfaces"
-import { RequestParams } from "../../interfaces-global/requestParams.interfaces"
+import { getDataParams } from "../../interfaces-global/getDataParams"
 
 interface CheckedInput {
     name: string,
@@ -11,5 +11,5 @@ export interface NecessaryWork {
     work: Work[],
     status: boolean
     updateWork: (data: CheckedInput) => void
-    getNecessaryWork: (data: RequestParams) => Promise<void>
+    getNecessaryWork: (data: getDataParams) => Promise<void>
 }

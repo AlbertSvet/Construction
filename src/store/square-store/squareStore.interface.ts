@@ -1,5 +1,6 @@
 import { SquareItem } from "../../interfaces-global/squareItem.interfaces"
-import { RequestParams } from "../../interfaces-global/requestParams.interfaces"
+import { getDataParams } from "../../interfaces-global/getDataParams"
+
 export interface Square {
     status: boolean,
     ceilingHeight: number,
@@ -8,5 +9,5 @@ export interface Square {
     updateTotalArea: (data:SquareItem[]) => void
     getCeilingHeight: (num: number) => void,
     updateSquareData: (data:SquareItem) => void,
-    getSquareData:  (data:RequestParams) => Promise<SquareItem[] | undefined>
+    getSquareData:  (data:getDataParams) => Promise<SquareItem[] | undefined>
 }

@@ -16,6 +16,9 @@ const TotalCost = () =>{
 
     const ceilingHeight = squareStore((state)=> state.ceilingHeight) // высота потолка
 
+    
+
+
     useEffect(()=>{
         updateTotalArea(squareData)
     },[squareData])
@@ -24,8 +27,13 @@ const TotalCost = () =>{
         priceCalculation(totalArea, work, ceilingHeight, squareData)
     },[totalArea, work, ceilingHeight])
 
+
      // метод получения курса валют
     const getExchangeRat = calculation((state)=> state.getExchangeRat)
+    // обновление итога в usd 
+    const updateTotalUsdPrice = calculation((state)=> state.updateTotalUsdPrice);
+ 
+   
     const [usdRate, setUsdRate] = useState<number | null>(null)
 
     const fetchRate = async () =>{
@@ -34,14 +42,19 @@ const TotalCost = () =>{
     }
     const usdRateRub = () =>{
         if(usdRate !== null){
-            return (totalPrice / usdRate).toFixed(2)
+            let usd = +(totalPrice / usdRate).toFixed(2)
+            return usd
         }
-        return '0.00'
+        return 0
     }
+    useEffect(()=>{
+        updateTotalUsdPrice(usdRateRub)
+    },[totalPrice])
+
     useEffect(()=>{
         fetchRate()
     },[])  
-   
+
    
     return(
         <div className='mainCalculator__totalCost totalCost'>

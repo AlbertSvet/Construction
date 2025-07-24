@@ -1,6 +1,6 @@
 import {create} from 'zustand'
 import { Square } from "./squareStore.interface"
-
+import request from '../../services/http.hook'
 // получение данных Площади
 const squareStore = create<Square>((set) => ({
     status: false,
@@ -41,15 +41,9 @@ const squareStore = create<Square>((set) => ({
             })
         }))
     } ,
-    getSquareData: async ({url,method = 'GET',  headers = { "Content-Type": "application/json" }}) => {
+    getSquareData: async ({url}) => {
         try{
-            const response = await fetch(url, {
-            method: method,
-            headers: headers
-         })
-            if(!response.ok){
-                throw new Error ('Ошибка')
-            }
+            const response = await request({url})
             const data = await response.json();
             set(()=>({
                 status: true,
@@ -60,8 +54,8 @@ const squareStore = create<Square>((set) => ({
             set(() => ({
             status: true
         }))
-            console.log(e)
-        }
+        
+    }
         
     }
 }))

@@ -1,6 +1,8 @@
 import RequiredWork from "../../component/required-work/RequiredWork"
 import Square from "../../component/square/Square"
 import TotalCost from "../../component/totalcost/TotalCost"
+import BtnPdf from "../../component/btnPdf/btnPdf"
+import SavedCalculations from "../../component/saved-calculations/savedCalculations"
 import { useOut, useTabs } from "../../store/store"
 import { useStoreAut } from "../../store/store"
 import { useNavigate } from "react-router-dom"
@@ -31,34 +33,39 @@ const MainCalculator = () =>{
     let classNames = 'mainCalculator__btn'
 
     return(
-        <section className="mainCalculator">
-            <div className="mainCalculator__container _container">
-                <div className='mainCalculator__info'>                    
-                    <p className='mainCalculator__user'>Вы вошли как {user?.email as string}</p>
-                    <button className='mainCalculator__btn-exit' onClick={handleOut}>Выйти</button>
+        <>
+            <section className="mainCalculator">
+                <div className="mainCalculator__container _container">
+                    <div className='mainCalculator__info'>                    
+                        <p className='mainCalculator__user'>Вы вошли как {user?.email as string}</p>
+                        <button className='mainCalculator__btn-exit' onClick={handleOut}>Выйти</button>
+                    </div>
+
+                    
+                        <div className="mainCalculator__tabs">
+                            <button onClick={()=>changeActive(0)} type="button" className= {`${classNames} ${activeTab === 0 ? 'active': ''}`} >Площадь помещения</button>
+                            <button onClick={()=>changeActive(1)} type="button" className={`${classNames} ${activeTab === 1 ? 'active': ''}`}>Необходимые работы</button>
+                        </div>
+                        <div className="mainCalculator__grid">
+                            <div className="mainCalculator__main-block">
+                                {activeTab === 0 &&  <Square/>}
+                                {activeTab === 1 &&  <RequiredWork/>}
+                            </div>
+                            <div>
+                                <TotalCost/>
+
+                            </div>
+                        </div>
+
+                        <BtnPdf/>
                 </div>
-
-                
-                    <div className="mainCalculator__tabs">
-                        <button onClick={()=>changeActive(0)} type="button" className= {`${classNames} ${activeTab === 0 ? 'active': ''}`} >Площадь помещения</button>
-                        <button onClick={()=>changeActive(1)} type="button" className={`${classNames} ${activeTab === 1 ? 'active': ''}`}>Необходимые работы</button>
-                    </div>
-                    <div className="mainCalculator__grid">
-                        <div className="mainCalculator__main-block">
-                            {activeTab === 0 &&  <Square/>}
-                            {activeTab === 1 &&  <RequiredWork/>}
-                        </div>
-                        <div>
-                            <TotalCost/>
-
-                        </div>
-                    </div>
-                   
-                
-            </div>
-            
-            
         </section >
+
+        <section className="saved-calculations">
+            <SavedCalculations/>
+        </section>
+        </>
+       
     )
 }
 
