@@ -2,7 +2,7 @@
   "name": "my-fullstack-app",
   "private": true,
   "scripts": {
-    "start": "concurrently \"npm start --prefix my-app\" \"npm start --prefix server\""
+    "start": "concurrently \"npm start --prefix client\" \"npm start --prefix server\""
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

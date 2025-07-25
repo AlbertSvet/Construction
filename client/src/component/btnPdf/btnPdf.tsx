@@ -1,8 +1,10 @@
 import './btnPdf.scss'
-import { necessaryWork,squareStore, calculation,storePdf } from '../../store/store'
-
+import { necessaryWork,squareStore, calculation,storePdf,useStoreAut } from '../../store/store'
+import { useEffect } from 'react'
 
 const BtnPdf = () =>{
+    // получаем user 
+    const user = useStoreAut((state)=> state.user)
     //  метод отправки данных на серв
     const postPdf = storePdf((state)=> state.postPdf)
     //  выбранные работы
@@ -14,8 +16,7 @@ const BtnPdf = () =>{
     //  итоговая сумма в рублях 
     const totalPriceRub = calculation((state)=>state.totalPrice)
     //  итоговая сумма в usd
-       const totalUsdPrice = calculation((state) => state.totalUsdPrice)
-
+    const totalUsdPrice = calculation((state) => state.totalUsdPrice)
 
     const gWorks = async () =>{
         const chekidWorkFilter = chekidWork.filter(item => item.checked)
@@ -44,7 +45,8 @@ const BtnPdf = () =>{
             squareData: squareDataFilter,
             ceilingHeight: ceilingHeight,
             totalPriceRub: totalPriceRub,
-            totalUsdPrice: totalUsdPrice
+            totalUsdPrice: totalUsdPrice,
+            userEmail: user?.email
         }
        
         const response = await postPdf({url:'http://localhost:3002/generate-pdf',method: "POST", body: JSON.stringify(report)})
@@ -57,7 +59,9 @@ const BtnPdf = () =>{
             a.click(); // симулируем клик
             a.remove(); // удаляем ссылку
             window.URL.revokeObjectURL(url); 
-        }
+    }
+
+   
    
     return(
         <div className="mainCalculator__btn-block">
