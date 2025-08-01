@@ -117,6 +117,7 @@
             align-items: center;
             font-family: Roboto;
             color: rgb(255, 255, 255);
+            
             span{
                 display: inline-block;
                 margin-left: 6px;
@@ -155,6 +156,7 @@
             // }
         }
         &__input{
+           
                 background-color: transparent;
                 color: rgba(255, 254, 254, 0.5);
                 font-family: Roboto;
@@ -176,7 +178,7 @@
                 }
                 &.active-inp{
                     transition: all 0.2s ease 0s;
-                    border-bottom: 1.5px solid rgb(0, 212, 46);
+                    border-bottom: 1.5px solid  #FF5F13;
                 }
                 &.active-false{
                     border-bottom: 1.5px solid rgb(212, 0, 0);

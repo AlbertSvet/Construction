@@ -11,11 +11,13 @@ const SavedCalculations = () =>{
     
      useEffect(()=>{
         getPdf({url: 'http://localhost:3002/files'})
-    },[calculationsListPDF])
-    
+    },[])
     const fillterListPDF = async (item: any) =>{
         await postPdf({url:'http://localhost:3002/files/delete', method: "POST", body:JSON.stringify(item),responseType: 'json'})
+        await getPdf({url: 'http://localhost:3002/files'})
     }
+
+    console.log(calculationsListPDF)
     return(
         <div className='saved-calculations__container _container'>
             <div className='saved-calculations__block'>
@@ -23,13 +25,14 @@ const SavedCalculations = () =>{
                 <ul className='saved-calculations__grid'>
                     {calculationsListPDF.length === 0 && <p>Список пуст</p>}
                     {calculationsListPDF.map((item,i) =>{
-                    const {fileName} = item
+                    const {fileName, } = item
                         return (
-                            <li key={i} className='saved-calculations__item'>
-                                <img src= {pdfIcon} alt="icon_pdf" />{fileName} 
-                                <button 
-                                    type="button"
-                                    onClick={()=>fillterListPDF(item)}>X</button>
+                            <li                            
+                            key={i} 
+                            className='saved-calculations__item'                          
+                            >
+                            <img src= {pdfIcon} alt="icon_pdf" />{fileName} 
+                            <button type="button" onClick={()=>fillterListPDF(item)}>X</button>
                             </li>
                         )
                     })}

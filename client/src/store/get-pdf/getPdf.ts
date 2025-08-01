@@ -8,6 +8,7 @@ interface responseBlob {
     fileName:string
 }
 interface FilePdfMeta {
+  id: string | number
   fileName: string;
   createdAt: string;
   userEmail: string;
@@ -32,9 +33,9 @@ const storePdf = create<StorePd>((set)=>({
             switch(responseType){
                 case 'json':
                     const json = await response.json(); 
-                    set(()=>({
-                            calculationsListPDF: [...json]
-                    }))
+                    // set(()=>({
+                    //         calculationsListPDF: [...json]
+                    // }))
                     return json
                 case 'blob':
                     const blob = await response.blob() 

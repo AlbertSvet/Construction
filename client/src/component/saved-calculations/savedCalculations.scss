@@ -46,6 +46,24 @@
             width: auto;
             display: flex;
             gap: 30px;
+            &:hover{                
+                button{
+                    transition: all 0.3s ease 0s;
+                    opacity: 1;
+                    overflow:visible;
+                    visibility:visible;
+                }
+            }
+            button{
+                background-color: transparent;
+                color: white;
+                font-weight: 400;
+                font-size: 20;
+                transition: all 0.3s ease 0s;
+                opacity: 0;
+                overflow: hidden;
+                visibility: hidden;
+            }
         }
 }
 
