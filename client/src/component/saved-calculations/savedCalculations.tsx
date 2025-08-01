@@ -6,10 +6,10 @@ const SavedCalculations = () =>{
     // метод отображения списка файлов из бд 
         const getPdf = storePdf((state)=> state.getPdf);
         const calculationsListPDF = storePdf((state)=> state.calculationsListPDF)
-
+        
      useEffect(()=>{
         getPdf({url: 'http://localhost:3002/files'})
-    },[calculationsListPDF])
+    },[])
     
     return(
         <div className='saved-calculations__container _container'>
@@ -20,7 +20,7 @@ const SavedCalculations = () =>{
                     {calculationsListPDF.map((item,i) =>{
                     const {fileName} = item
                         return (
-                            <li key={i} className='saved-calculations__item'><img src= {pdfIcon} alt="icon_pdf" />{fileName}</li>
+                            <li key={i} className='saved-calculations__item'><img src= {pdfIcon} alt="icon_pdf" />{fileName} <button type="button">X</button></li>
                         )
                     })}
                 </ul>

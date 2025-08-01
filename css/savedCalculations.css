@@ -1,0 +1,39 @@
+.saved-calculations {
+  margin-top: 50px;
+}
+.saved-calculations__block {
+  -webkit-box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.5);
+          box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.5);
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(167, 167, 172, 0.13)), to(rgba(29, 29, 53, 0.9)));
+  background: linear-gradient(180deg, rgba(167, 167, 172, 0.13), rgba(29, 29, 53, 0.9) 100%);
+  padding: 40px 50px;
+}
+.saved-calculations__title {
+  color: rgb(255, 255, 255);
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28px;
+  text-decoration-line: underline;
+  margin-bottom: 25px;
+}
+.saved-calculations__grid {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-row-gap: 30px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+.saved-calculations__item {
+  color: rgb(255, 255, 255);
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  width: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 30px;
+}

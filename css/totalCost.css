@@ -1,0 +1,31 @@
+.totalCost {
+  -webkit-box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.5);
+          box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.5);
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(167, 167, 172, 0.13)), to(rgba(29, 29, 53, 0.9)));
+  background: linear-gradient(180deg, rgba(167, 167, 172, 0.13), rgba(29, 29, 53, 0.9) 100%);
+  padding: 100px 20px;
+  color: rgb(255, 255, 255);
+  font-family: Roboto;
+  text-align: center;
+}
+.totalCost__total-rub {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 18px;
+}
+.totalCost__text {
+  margin-bottom: 40px;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 30px;
+}
+.totalCost__text:last-child {
+  margin-bottom: 0px;
+}
+.totalCost__total-usd {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 18px;
+}

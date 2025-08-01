@@ -18,7 +18,12 @@ const squareStore = create<Square>((set) => ({
     // метод суммы всей площади
     updateTotalArea: (data)=>{
        const total = data.reduce((acc, item)=>{
-           return acc + item.value
+            if(item.value < 0) {
+                return acc
+            }else{
+                return acc + item.value 
+            }
+           
        },0)
        set(()=>({
         totalArea: total

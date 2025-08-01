@@ -178,7 +178,11 @@
                     transition: all 0.2s ease 0s;
                     border-bottom: 1.5px solid rgb(0, 212, 46);
                 }
+                &.active-false{
+                    border-bottom: 1.5px solid rgb(212, 0, 0);
+                }
         }
+       
       
        
 }

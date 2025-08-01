@@ -1,4 +1,9 @@
+
 // Импорт библеотек
+
+// чтение env переменных
+require('dotenv').config();
+
 //  1.библеотека для создания сервера
 const express = require('express');
 
@@ -17,6 +22,9 @@ const app = express();
 // path
 const path = require('path')
 
+// подключение mongoDB
+const connectDb = require('./db');
+
 // 5.включаем мидлвеер CORS. Позволяет принимать запросы с других портов. без этого браузер блокнет запрос
 app.use(cors());
 
@@ -24,15 +32,15 @@ app.use(cors());
 app.use(express.json());
 
 // подключение firebase
-const admin = require('firebase-admin');
-const serviceAccount = require('./serviceAccountKey.json');
-const { error } = require('console');
+// const admin = require('firebase-admin');
+// const serviceAccount = require('./serviceAccountKey.json');
 
 
-admin.initializeApp({
-    credential:admin.credential.cert(serviceAccount)
-})
-const db = admin.firestore();
+
+// admin.initializeApp({
+//     credential:admin.credential.cert(serviceAccount)
+// })
+// const db = admin.firestore();
 
 // обрабатываем POST запрос. адресс с фронта будет generate-pdf
 //  метод post принимает адрес и колбэк, в колбэке два параметра, первый req тут будет тело запроса с фронта, res - ответ который мы отправим на фронт. 
@@ -88,14 +96,23 @@ app.post('/generate-pdf',  (req,res)=>{
 
   
 
-    //  отправляем на фронт файл пдф
+    //  сохраняем данные в монгоДб
      stream.on('finish', async ()=> {
-          // сохраняем пдф в fireStore
-        await db.collection('files').add({
-            fileName:fileName,
-            createAt: new Date().toLocaleDateString(),
+        // записываем файл в монгоДБ
+        const db = await connectDb();
+        const filesCollection = db.collection('files');
+          await filesCollection.insertOne({
+            fileName: fileName,
+            createdAt: new Date().toLocaleDateString(),
             userEmail: userEmail
-        })
+        });
+// ===================================================================
+          // сохраняем пдф в fireStore
+        // await db.collection('files').add({
+        //     fileName:fileName,
+        //     createAt: new Date().toLocaleDateString(),
+        //     userEmail: userEmail
+        // })
         //  отправляем файл из папки output
         //  отправляем файл как загрузку 
         //  метод download автоматически установит правильные заголовки ответа
@@ -120,23 +137,23 @@ app.post('/generate-pdf',  (req,res)=>{
 
 // // обрабатываем Get запрос. адресс с фронта будет files
 
-const outputDir  = path.join(__dirname, 'output');
 
-app.get('/files', (req, res)=> {
+
+app.get('/files', async(req, res)=> {
     try{
-       fs.readdir(outputDir, (err, files)=>{
-            if(err){
-                console.log(err)
-                return res.status(500).json({error:"Ошибка сервера"})
-            }
-            const pdfFile = files.map((file,i) => ({
-                id: i + 1,
-                fileName: file
-            }))
+    const db = await connectDb(); // подключение к БД
+    const collection = db.collection('files'); // обращение к коллекции
+    const data = await collection.find().toArray(); // получаем все записи
+    const formattedFiles = data.map(file => ({
+      id: file._id, 
+      fileName: file.fileName,
+      createdAt: file.createdAt,
+      userEmail: file.userEmail
+    }));
+    res.status(200).json(formattedFiles);
 
-            res.status(200).json(pdfFile)
-       })
-
+    // ================================
+      
         // const shapshot = await db.collection('files').get();
         // const files = [];
         // shapshot.forEach(doc =>{
@@ -149,6 +166,7 @@ app.get('/files', (req, res)=> {
         // })
         // res.status(200).json(files)
     }catch(e){
+        console.error('Ошибка при получении файлов из БД:', e);
          res.status(500).json({ error: 'Не удалось получить список файлов' });
         // if (e.code === 8) {
         // // Заглушка при превышении квоты

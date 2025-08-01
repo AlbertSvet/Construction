@@ -4,6 +4,7 @@
 **/node_modules
 /my-app/node_modules
 /server/node_modules
+/server/output
 /.pnp
 .pnp.js
 

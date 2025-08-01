@@ -60,7 +60,7 @@ const View = () =>{
     const status = squareStore((state)=>state.status)
 
     const [activeId, setActiveId] = useState<string | null>(null)
-    console.log(activeId)
+    
     useEffect(()=>{
         if(!status){
             getSquareData({url:'http://localhost:3001/squares'})
@@ -88,7 +88,8 @@ const View = () =>{
                 
                 {squareData.map(({name,id, value},i)=> {
                     const isActive = activeId === id || value > 0;
-                    const activeInputClass = `square__input${isActive ? '  active-inp' : ''}`;
+                    const isActiveFalse =  value < 0 ? ' active-false' : '';
+                    const activeInputClass = `square__input${isActive && value >= 0 ? '  active-inp' : isActiveFalse}`;
                     return (
                         
                         <div className='square__item' key={i}>

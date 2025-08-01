@@ -1,12 +1,15 @@
 import './btnPdf.scss'
 import { necessaryWork,squareStore, calculation,storePdf,useStoreAut } from '../../store/store'
 import { useEffect } from 'react'
+import { stat } from 'fs'
 
 const BtnPdf = () =>{
     // получаем user 
     const user = useStoreAut((state)=> state.user)
     //  метод отправки данных на серв
     const postPdf = storePdf((state)=> state.postPdf)
+    // метод гет запроса на монгоДБ для ререндера компонента
+    const getPdf = storePdf((state)=> state.getPdf)
     //  выбранные работы
     const chekidWork = necessaryWork((state)=> state.work);
     //  выбранные комнат 
@@ -59,6 +62,7 @@ const BtnPdf = () =>{
             a.click(); // симулируем клик
             a.remove(); // удаляем ссылку
             window.URL.revokeObjectURL(url); 
+         getPdf({url: 'http://localhost:3002/files'});
     }
 
    
