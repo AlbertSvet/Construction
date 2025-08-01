@@ -52,8 +52,9 @@ const BtnPdf = () =>{
             userEmail: user?.email
         }
        
-        const response = await postPdf({url:'http://localhost:3002/generate-pdf',method: "POST", body: JSON.stringify(report)})
-        // console.log(response)
+        const response = await postPdf({url:'http://localhost:3002/generate-pdf',method: "POST", body: JSON.stringify(report),responseType:'blob'})
+        // const responseBlob  = await response.blob()
+
          const url = window.URL.createObjectURL(response);
          const a = document.createElement('a');
             a.href = url;

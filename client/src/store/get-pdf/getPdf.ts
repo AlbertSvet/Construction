@@ -12,11 +12,13 @@ interface FilePdfMeta {
   createdAt: string;
   userEmail: string;
 }
-
+interface postPdf extends RequestParams{
+    responseType?: string
+}
 interface StorePd {
     calculationsPdf: responseBlob[],
     calculationsListPDF: FilePdfMeta[],
-    postPdf: (data: RequestParams) => Promise<Blob>,
+    postPdf: (data: postPdf) => Promise<any>,
     getPdf: (data: RequestParams) => void
 }
 
@@ -24,16 +26,32 @@ interface StorePd {
 const storePdf = create<StorePd>((set)=>({
     calculationsPdf: [],
     calculationsListPDF: [],
-    postPdf: async ({url, method, body}) => {
+    postPdf: async ({url, method, body, responseType}) => {
         try{
-            let response = await request({url,method, body});            
-            const contentDisp = response.headers.get('Content-Disposition')
-            const fileName = contentDisp?.split('filename=')[1].replace(/"/g, '') || 'default.png';
-            const responsePdf = await response.blob();
-            set((prevState)=>({
-                    calculationsPdf: [...prevState.calculationsPdf, {blob: responsePdf, fileName: fileName}]
-                }))
-            return responsePdf
+            let response = await request({url,method, body});  
+            switch(responseType){
+                case 'json':
+                    const json = await response.json(); 
+                    set(()=>({
+                            calculationsListPDF: [...json]
+                    }))
+                    return json
+                case 'blob':
+                    const blob = await response.blob() 
+                    return blob
+                default:
+                    return response
+            }
+               
+            
+            // return response    
+            // const contentDisp = response.headers.get('Content-Disposition')
+            // const fileName = contentDisp?.split('filename=')[1].replace(/"/g, '') || 'default.png';
+            // const responsePdf = await response.blob();
+            // set((prevState)=>({
+            //         calculationsPdf: [...prevState.calculationsPdf, {blob: responsePdf, fileName: fileName}]
+            //     }))
+            // return responsePdf
             
          
         }catch(e){

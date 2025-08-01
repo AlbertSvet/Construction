@@ -135,17 +135,33 @@ app.post('/generate-pdf',  (req,res)=>{
 
 // =============================================================
 
+
+// удаление файла
+app.post('/files/delete', async(req,res)=>{
+    try{
+        // console.log('тело:', req.body)
+       const {id} = req.body;
+       const db = await connectDb();
+       const collection = db.collection('files');
+       // Чтобы удалить по MongoDB ObjectId, нужно его преобразовать:
+        const ObjectId = require('mongodb').ObjectId;
+        await collection.deleteOne({ _id: new ObjectId(id) });
+        const data = await collection.find().toArray();
+        res.status(200).json(data)
+    }catch(e){
+        console.log(e)
+        res.status(500).json({ error: 'Не удалось получить список файлов' });
+    }
+})
+
 // // обрабатываем Get запрос. адресс с фронта будет files
-
-
-
 app.get('/files', async(req, res)=> {
     try{
     const db = await connectDb(); // подключение к БД
     const collection = db.collection('files'); // обращение к коллекции
     const data = await collection.find().toArray(); // получаем все записи
     const formattedFiles = data.map(file => ({
-      id: file._id, 
+      id: file._id.toString(), 
       fileName: file.fileName,
       createdAt: file.createdAt,
       userEmail: file.userEmail
