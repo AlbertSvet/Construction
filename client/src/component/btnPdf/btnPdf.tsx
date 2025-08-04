@@ -69,9 +69,9 @@ const BtnPdf = () =>{
    
    
     return(
-        <div className="mainCalculator__btn-block">
+        // <div className="mainCalculator__btn-block">
             <button onClick={gWorks} className="mainCalculator__btn-save">Скачать PDF</button>
-        </div>
+        // </div>
     )
 }
 

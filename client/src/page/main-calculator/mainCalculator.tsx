@@ -7,6 +7,7 @@ import { useOut, useTabs } from "../../store/store"
 import { useStoreAut } from "../../store/store"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
+import { Link } from "react-router-dom"
 import './mainCalculator.scss';
 
 const MainCalculator = () =>{
@@ -56,8 +57,11 @@ const MainCalculator = () =>{
 
                             </div>
                         </div>
-
-                        <BtnPdf/>
+                        <div className="mainCalculator__btn-block">
+                            <BtnPdf/> 
+                            <Link className="mainCalculator__btn-save" to={'/statistics'}>Статистика</Link>
+                        </div>
+                        
                 </div>
         </section >
 

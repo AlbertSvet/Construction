@@ -104,7 +104,10 @@ app.post('/generate-pdf',  (req,res)=>{
           await filesCollection.insertOne({
             fileName: fileName,
             createdAt: new Date().toLocaleDateString(),
-            userEmail: userEmail
+            userEmail: userEmail,
+            totalPriceRub: totalPriceRub,
+            totalUsdPrice: totalUsdPrice
+
         });
 // ===================================================================
           // сохраняем пдф в fireStore
@@ -164,7 +167,10 @@ app.get('/files', async(req, res)=> {
       id: file._id.toString(), 
       fileName: file.fileName,
       createdAt: file.createdAt,
-      userEmail: file.userEmail
+      userEmail: file.userEmail,
+      totalPriceRub: file.totalPriceRub,
+      totalUsdPrice: file.totalUsdPrice,
+
     }));
     res.status(200).json(formattedFiles);
 

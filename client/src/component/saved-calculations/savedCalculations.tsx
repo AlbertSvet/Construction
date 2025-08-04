@@ -6,6 +6,7 @@ const SavedCalculations = () =>{
     // метод отображения списка файлов из бд 
         const getPdf = storePdf((state)=> state.getPdf);
         const calculationsListPDF = storePdf((state)=> state.calculationsListPDF)
+        
     // метод отправки на сервер 
     const postPdf = storePdf((state)=> state.postPdf)
     

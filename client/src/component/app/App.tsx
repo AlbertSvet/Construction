@@ -6,6 +6,7 @@ import { useStoreAut } from '../../store/store';
 import Registration from '../../page/registration/registration';
 import Authorization from '../../page/authorization/authorization';
 import MainCalculator from '../../page/main-calculator/mainCalculator';
+import Statistics from '../../page/statistics/statistics';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 
 import bg from './Background.jpg'
@@ -37,6 +38,7 @@ function App() {
               <Route path='/' element={<Registration/>}/>
               <Route path='/authorization' element={<Authorization/>}/>
               <Route path='/main-calculator' element={<MainCalculator/>}/>
+              <Route path='/statistics' element={<Statistics/>}/>
             </Routes>
           </main>
 

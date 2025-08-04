@@ -7,11 +7,13 @@ interface responseBlob {
     blob: Blob | JSON | Text,    
     fileName:string
 }
-interface FilePdfMeta {
-  id: string | number
-  fileName: string;
-  createdAt: string;
-  userEmail: string;
+export interface FilePdfMeta {
+  id: string | number,
+  fileName: string,
+  createdAt: string,
+  userEmail: string,
+  totalPriceRub: string | number,
+  totalUsdPrice: string | number
 }
 interface postPdf extends RequestParams{
     responseType?: string
@@ -75,32 +77,5 @@ const storePdf = create<StorePd>((set)=>({
     }
 }))
 
-// const storePdf = create<StorePd>((set)=>({
-//     calculationsPdf: [],
-//     postPdf: async ({url, method = 'POST', body = null, headers =  { "Content-Type": "application/json" }}:RequestParamsPdf)=>{
-//         try{
-//             let response = await fetch(url, {
-//                 method: method,
-//                 body: body,
-//                 headers: headers
-//             })
-//             if(!response.ok){
-//                 throw new Error('Ошибка сервера')
-//             }
-//             // получаем PDF как blob
-//             const responsePdf = await response.blob();
-//             const contentDisp = response.headers.get('Content-Disposition')
-//             const fileName = contentDisp?.split('filename=')[1].replace(/"/g, '') || 'default.png';
-//             // console.log(contentDisp)
-//             set((prevPdf)=>({
-//                 calculationsPdf: [...prevPdf.calculationsPdf, {blob: responsePdf, fileName: fileName}]
-//             }))
-//             return responsePdf
-//         }catch(e){
-//             throw e
-//         }
-        
-//     }
-// }))
 
 export default storePdf
