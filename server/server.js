@@ -157,6 +157,46 @@ app.post('/files/delete', async(req,res)=>{
     }
 })
 
+// получение square 
+app.get('/squares', async(req,res)=>{
+    try{
+        const db = await connectDb();
+        const collection = db.collection('squares');
+        const data = await collection.find().toArray();
+        const formattedData = data.map((item) => {
+            return {
+                id: item.id,
+                value: item.value,
+                name: item.name
+            }
+        })
+        res.status(200).json(formattedData)
+    }catch(e){
+        console.error('Ошибка при получении файлов из БД:', e);
+        res.status(500).json({ error: 'Не удалось получить список файлов' });
+    }
+})
+// получение operations
+app.get('/operations', async(req,res)=>{
+    try{
+        const db = await connectDb();
+        const collection = db.collection('operations');
+        const data = await collection.find().toArray();
+        const formattedData = data.map((item) => {
+            return {
+                id: item.id,
+                count: item.count,
+                unit: item.unit,
+                name: item.name
+            }
+        })
+        res.status(200).json(formattedData)
+    }catch(e){
+        console.error('Ошибка при получении файлов из БД:', e);
+        res.status(500).json({ error: 'Не удалось получить список файлов' });
+    }
+})
+
 // // обрабатываем Get запрос. адресс с фронта будет files
 app.get('/files', async(req, res)=> {
     try{

@@ -5,6 +5,7 @@
 /my-app/node_modules
 /server/node_modules
 /server/output
+/server/.env
 /.pnp
 .pnp.js
 
