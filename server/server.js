@@ -241,7 +241,7 @@ app.get('/files', async(req, res)=> {
 })
 
 //  запускаем сервер на порту 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, ()=>{
    
     console.log(`Сервер запущен ${PORT}`)
