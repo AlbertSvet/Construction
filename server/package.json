@@ -17,7 +17,6 @@
     "firebase-admin": "^13.4.0",
     "mongodb": "^6.18.0",
     "mongoose": "^8.16.5",
-    "my-fullstack-app": "file:..",
     "pdfkit": "^0.17.1"
   }
 }
