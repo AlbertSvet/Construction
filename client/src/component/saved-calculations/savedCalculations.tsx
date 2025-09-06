@@ -11,11 +11,11 @@ const SavedCalculations = () =>{
     const postPdf = storePdf((state)=> state.postPdf)
     
      useEffect(()=>{
-        getPdf({url: 'http://localhost:3002/files'})
+        getPdf({url: 'https://construction-tkb7.onrender.com/files'})
     },[])
     const fillterListPDF = async (item: any) =>{
-        await postPdf({url:'http://localhost:3002/files/delete', method: "POST", body:JSON.stringify(item),responseType: 'json'})
-        await getPdf({url: 'http://localhost:3002/files'})
+        await postPdf({url:'https://construction-tkb7.onrender.com/files/delete', method: "POST", body:JSON.stringify(item),responseType: 'json'})
+        await getPdf({url: 'https://construction-tkb7.onrender.com/files'})
     }
 
     console.log(calculationsListPDF)

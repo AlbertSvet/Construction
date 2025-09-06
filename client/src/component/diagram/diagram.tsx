@@ -31,7 +31,7 @@ const Diagram = () =>{
     const rangeCount = useMemo(() => rangeCalculation(calculationsListPDF), [calculationsListPDF]);
 
     useEffect(()=>{
-        getPdf({url: 'http://localhost:3002/files'})
+        getPdf({url: 'https://construction-tkb7.onrender.com/files'})
     },[])
 
    

@@ -52,7 +52,7 @@ const BtnPdf = () =>{
             userEmail: user?.email
         }
        
-        const response = await postPdf({url:'http://localhost:3002/generate-pdf',method: "POST", body: JSON.stringify(report),responseType:'blob'})
+        const response = await postPdf({url:'https://construction-tkb7.onrender.com/generate-pdf',method: "POST", body: JSON.stringify(report),responseType:'blob'})
         // const responseBlob  = await response.blob()
 
          const url = window.URL.createObjectURL(response);
@@ -63,7 +63,7 @@ const BtnPdf = () =>{
             a.click(); // симулируем клик
             a.remove(); // удаляем ссылку
             window.URL.revokeObjectURL(url); 
-         getPdf({url: 'http://localhost:3002/files'});
+         getPdf({url: 'https://construction-tkb7.onrender.com/files'});
     }
 
    

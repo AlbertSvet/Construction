@@ -63,7 +63,7 @@ const View = () =>{
     
     useEffect(()=>{
         if(!status){
-            getSquareData({url:'http://localhost:3002/squares'})
+            getSquareData({url:'https://construction-tkb7.onrender.com/squares'})
 
         }
     },[])

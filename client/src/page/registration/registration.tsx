@@ -16,31 +16,7 @@ const Registration = () =>{
     const errorMesages = useStore((state) => state.errorMesage)
     const getFireBase = useStore((state) => state.zusGet)
     const changeErrorMesage = useStore((state) => state.changeErrorMesage)
-    // не совсем понял почему происходит бесконечный рендер при таком способе деструктуризации. 
-    // решение использовать  shallow. но и тут возникает ошибка 
-    // const {
-    //     zusForm,
-    //     loading,
-    //     statusRegistration,
-    //     errorMesages,
-    //     changeErrorMesag,
-    //     changeStatus, 
-    //     getFireBase,
-              
-    //     } = useStore(
-    //         (state)=>({
-    //         zusForm: state.zusForm,
-    //         loading: state.loading,
-    //         statusRegistration: state.status,
-    //         errorMesages: state.errorMesage,
-    //         changeErrorMesag:state.changeErrorMesage,
-    //         changeStatus: state.changeStatus,
-    //         getFireBase: state.zusGet,
-            
-
-    //     }),
-    //     // shallow
-    // ); 
+   
     const [count, setCount] = useState<number>(3)
     
 

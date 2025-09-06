@@ -30,7 +30,7 @@ const RequiredWork = () =>{
     // ==================
     useEffect(()=>{
         if(!status){
-            getNecessaryWork({url: 'http://localhost:3002/operations'})
+            getNecessaryWork({url: 'https://construction-tkb7.onrender.com/operations'})
         }
     },[])
     const getValue = (e: ChangeEvent<HTMLInputElement>) =>{
